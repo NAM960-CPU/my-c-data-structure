@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <time.h>
+
+int main() {
+    clock_t s,e;
+    double t;
+
+    // Linear O(n)
+    int n = 1000000;
+    s = clock(); for(int i=0;i<n;i++); e = clock();
+    t = (double)(e-s)/CLOCKS_PER_SEC;
+    printf("Linear O(n), n=%d: %f sec\n", n, t);
+
+    // Quadratic O(n^2)
+    n = 500;
+    s = clock(); for(int i=0;i<n;i++) for(int j=0;j<n;j++); e = clock();
+    t = (double)(e-s)/CLOCKS_PER_SEC;
+    printf("Quadratic O(n^2), n=%d: %f sec\n", n, t);
+
+    // Logarithmic O(log n)
+    n = 100000000;
+    s = clock(); int x=n; while(x>1)x/=2; e = clock();
+    t = (double)(e-s)/CLOCKS_PER_SEC;
+    printf("Logarithmic O(log n), n=%d: %f sec\n", n, t);
+
+    return 0;
+}
+
