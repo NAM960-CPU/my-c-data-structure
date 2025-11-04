@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+unsigned char getPixel(unsigned char **img, int x, int y);
+void setPixel(unsigned char **img, int x, int y, unsigned char val);
+void printImage(unsigned char **img, int width, int height);
+
+int main() {
+    int width, height;
+    int i, j;
+
+    printf("Enter image width: ");
+    scanf("%d", &width);
+    printf("Enter image height: ");
+    scanf("%d", &height);
+    unsigned char **image = (unsigned char **)malloc(height * sizeof(unsigned char *));
+    if (image == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+
+    for (i = 0; i < height; i++) {
+        image[i] = (unsigned char *)malloc(width * sizeof(unsigned char));
+        if (image[i] == NULL) {
+            printf("Row allocation failed!\n");
+            exit(1);
+        }
+    }
+    printf("\nEnter pixel values (0–255) row by row:\n");
+    for (i = 0; i < height; i++) {
+        for (j = 0; j < width; j++) {
+            unsigned char val;
+            scanf("%hhu", &val);
+            setPixel(image, j, i, val);
+        }
+    }
+
+    printf("\nGrayscale Image Matrix:\n");
+    printImage(image, width, height);
+
+    printf("\nPixel at (1,1) = %d\n", getPixel(image, 1, 1)
+    for (i = 0; i < height; i++)
+        free(image[i]);
+    free(image);
+
+    return 0;
+}
+unsigned char getPixel(unsigned char **img, int x, int y) {
+    return img[y][x];
+}
+void setPixel(unsigned char **img, int x, int y, unsigned char val) {
+    img[y][x] = val;
+}
+void printImage(unsigned char **img, int width, int height) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            printf("%3d ", img[i][j]);
+        }
+        printf("\n");
+    }
+}
