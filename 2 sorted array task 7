@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* mergeArrays(int* arr1, int n1, int* arr2, int n2, int* mergedSize) {
+    int i = 0, j = 0, k = 0;
+    int *merged = (int*) malloc((n1 + n2) * sizeof(int)); // allocate max possible size
+
+    if (merged == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+
+    while (i < n1 && j < n2) {
+        if (arr1[i] < arr2[j]) {
+            if (k == 0 || merged[k - 1] != arr1[i])
+                merged[k++] = arr1[i];
+            i++;
+        } else if (arr1[i] > arr2[j]) {
+            if (k == 0 || merged[k - 1] != arr2[j])
+                merged[k++] = arr2[j];
+            j++;
+        } else { // arr1[i] == arr2[j]
+            if (k == 0 || merged[k - 1] != arr1[i])
+                merged[k++] = arr1[i];
+            i++;
+            j++;
+        }
+    }
+    while (i < n1) {
+        if (k == 0 || merged[k - 1] != arr1[i])
+            merged[k++] = arr1[i];
+        i++;
+    }
+
+    while (j < n2) {
+        if (k == 0 || merged[k - 1] != arr2[j])
+            merged[k++] = arr2[j];
+        j++;
+    }
+
+    merged = (int*) realloc(merged, k * sizeof(int));
+    if (merged == NULL && k > 0) {
+        printf("Memory reallocation failed!\n");
+        exit(1);
+    }
+
+    *mergedSize = k;
+    return merged;
+}
+
+int main() {
+    int n1, n2, i;
+
+    printf("Enter size of first sorted array: ");
+    scanf("%d", &n1);
+    int *arr1 = (int*) malloc(n1 * sizeof(int));
+
+    printf("Enter %d sorted elements for first array: ", n1);
+    for (i = 0; i < n1; i++)
+        scanf("%d", &arr1[i]);
+
+    printf("Enter size of second sorted array: ");
+    scanf("%d", &n2);
+    int *arr2 = (int*) malloc(n2 * sizeof(int));
+
+    printf("Enter %d sorted elements for second array: ", n2);
+    for (i = 0; i < n2; i++)
+        scanf("%d", &arr2[i]);
+
+    int mergedSize;
+    int *merged = mergeArrays(arr1, n1, arr2, n2, &mergedSize);
+
+    printf("\nMerged array without duplicates:\n");
+    for (i = 0; i < mergedSize; i++)
+        printf("%d ", merged[i]);
+    printf("\n");
+    free(arr1);
+    free(arr2);
+    free(merged);
+
+    return 0;
+}
